@@ -1,0 +1,15 @@
+/home/jacqueline/F-sharp/ngo/ngo/obj/x86/Debug/.NETFramework,Version=v4.0.AssemblyAttribute.fs
+/home/jacqueline/F-sharp/ngo/ngo/bin/Debug/ngo.exe.config
+/home/jacqueline/F-sharp/ngo/ngo/bin/Debug/ngo.exe.mdb
+/home/jacqueline/F-sharp/ngo/ngo/bin/Debug/ngo.exe
+/home/jacqueline/F-sharp/ngo/ngo/obj/x86/Debug/ngo.exe
+/home/jacqueline/F-sharp/ngo/ngo/obj/x86/Debug/ngo.exe.mdb
+/home/jacqueline/F-sharp/ngo/ngo/bin/Debug/EntityFramework.dll
+/home/jacqueline/F-sharp/ngo/ngo/bin/Debug/EntityFramework.SqlServer.dll
+/home/jacqueline/F-sharp/ngo/ngo/bin/Debug/FSharp.Date.dll
+/home/jacqueline/F-sharp/ngo/ngo/bin/Debug/FSharp.Core.dll
+/home/jacqueline/F-sharp/ngo/ngo/bin/Debug/Newtonsoft.Json.dll
+/home/jacqueline/F-sharp/ngo/ngo/bin/Debug/NodaTime.dll
+/home/jacqueline/F-sharp/ngo/ngo/bin/Debug/Newtonsoft.Json.FSharp.dll
+/home/jacqueline/F-sharp/ngo/ngo/bin/Debug/DateTimeExtensions.dll
+/home/jacqueline/F-sharp/ngo/ngo/bin/Debug/FSharp.Data.dll
