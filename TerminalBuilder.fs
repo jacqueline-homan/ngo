@@ -14,7 +14,7 @@ module TerminalBuilder =
         match answer with 
         | "1" -> Advocate
         | "2" -> Client
-        | _ -> printfn "Invalid Entry"
+        | _ -> printfn "INVALID ENTRY"
                caller()
 
     let specialNeeds():Set<Disabilities> =
@@ -43,7 +43,7 @@ module TerminalBuilder =
                     | "7" -> Some Undiagnosed
                     | "exit" -> printfn "No disabling conditions"
                                 None
-                    | _ -> printfn "Invalid Entry"
+                    | _ -> printfn "INVALID ENTRY"
                            None
                 match sn with
                 | None -> spnds(s)
@@ -84,9 +84,119 @@ module TerminalBuilder =
                     | "skills training" -> Some SkillsTraining
                     | "economic support" -> Some EconomicSupport
                     | "job placement" -> Some JobPlacement
-                    | _ -> printfn "Invalid Entry"
+                    | _ -> printfn "INVALID ENTRY"
                            None
                 match t with
                 | None -> unmetneeds(u)
                 | Some(y) -> unmetneeds(u.Add(y))
-        unmetneeds(new Set<UnmetNeeds> ([]))
+        unmetneeds(new Set<UnmetNeeds> ([]))  
+
+    let rec callerRequest():CallerRequest =
+        printfn "What kind of help did you need and ask for?"
+        printfn "1 for Police Dispatch"
+        printfn "2 for Sex Trafficking Survivor Aftercare"
+        printfn "3 for Domestic Violence Survivor Services"
+        printfn "4 for Poverty/Homelessness Relief"
+        let answer = Console.ReadLine()
+        match answer with
+        | "1" -> PoliceDispatch
+        | "2" -> TraffickingAftercare (needs())
+        | "3" -> DVSupport (needs())
+        | "4" -> PovertyRelief (needs())
+        | _ -> printfn "INVALID ENTRY"
+               callerRequest()
+
+    let rec ngo():Ngo =
+        printfn "What kind of NGO were you referred to?"
+        printfn "1 for Homeless Shelter"
+        printfn "2 for Domestic Violence Shelter"
+        printfn "3 for Trafficking Survivor Residential Aftercare Program"
+        printfn "4 for Trafficking Victim Safehouse"
+        printfn "5 for Food Assistance"
+        printfn "6 for Clothing Assistance"
+        printfn "7 for Medical and Dental Care charity clinic"
+        let answer = Console.ReadLine()
+        printfn "Enter the name of the NGO you  were referred to: "
+        let ans = Console.ReadLine()
+        printfn "%s" ans
+        match ans.Trim().ToLower() with
+        | "1" -> Ngo(HomelessShelter, ans)
+        | "2" -> Ngo(DVShelter, ans)
+        | "3" -> Ngo(TraffickingSurvivorAftercare, ans)
+        | "4" -> Ngo(TraffickingVictimSafehouse, ans)
+        | "5" -> Ngo(FoodPantry, ans)
+        | "7" -> Ngo(ClothingPantry, ans)
+        | "8" -> Ngo(MedicalDentalClinic, ans)
+        | _ -> printfn "INVALID ENTRY"
+               ngo()
+
+    let rec followup() =
+        printfn "Did anyone follow up with you?"
+        printfn "1 for NO (and I didn't know what else to do)"
+        printfn "2 for YES (a caseworker/social worker said they would follow up"
+        printfn "3 for Self-followup/No followup from caseworker/socialworker."
+        let reply = Console.ReadLine()
+        match reply with
+        | "1" -> NoFollowup
+        | "2" -> SocialWorker (help())
+        | "3" -> SelfDirected (help())
+        | _ -> printfn "INVALID ENTRY"
+               followup()
+    
+    and help():Help =
+        printfn "What help did you get?"
+        printfn "1 if you got all the help you needed and requested"
+        printfn "2 if you were not helped and all referrals were exhausted"
+        printfn "3 if you were denied help and not offered a referral"
+        printfn "4 if you were offered the WRONG help (i.e. offered drug rehab instead of shelter)"
+        printfn "5 if you were not helped but given a referral to another NGO"
+        let response = Console.ReadLine()
+        match response with
+        | "1" -> Helped
+        | "2" -> ExhaustedOptions
+        | "3" -> DeniedHelp (followup())
+        | "4" -> HelpFail (followup())
+        | "5" -> GivenReferral (ref())
+        | _ -> printfn "INVALID ENTRY"
+               help()
+
+    and ref():RefToNextNgo =
+        let n = ngo()
+        let f = followup()
+        RefToNextNgo( f, n)
+
+    let rec police_disp():PoliceDisp =
+        printfn "Did police help victim without arresting her/him(Y or N)?"
+        let reply = Console.ReadLine().Trim().ToLower()
+        match reply with
+        | "Y" -> VictimRescued
+        | "N" -> CopsNoHelp (followup())
+        | _ -> printfn "INVALID ENTRY"
+               police_disp()
+
+    let rec firstngo() =
+        printfn "Which NGO did you contact for help first?"
+        let resp = Console.ReadLine()
+        match resp.Trim().ToLower() with
+        | "%s" -> printfn "First NGO called: **%s**" resp
+        | _ ->
+            let rec call_outcome():CallOutcome =
+                printfn "What help did %s provide?" resp
+                printfn "1 for %s hotline operator dispatched 911" resp
+                printfn "2 for %s provided aftercare to survivor" resp
+                printfn "3 for %s referred me to another NGO" resp
+                printfn "4 for %s denied me help/did not help at all" resp
+                printfn "5 for call got disconnected and %s did not follow up" resp
+                let re = Console.ReadLine()
+                match re with
+                |"1" -> EmergencyResponse (police_disp())
+                |"2" -> GotHelped
+                |"3" -> Referred (ref())
+                |"4" -> NotHelped (followup())
+                |"5" -> CallDrop (followup())
+                | _ -> printfn "INVALID ENTRY"
+                       call_outcome()
+            firstngo()
+
+    
+     

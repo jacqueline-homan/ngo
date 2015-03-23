@@ -12,10 +12,14 @@ open Agencies.TerminalBuilder
 
 
 let helpreport() =
-    printfn "---------------------------------------------------------"
-    printfn "--Survivor/Advocate Report on Outcomes of Help Requests--"
-    printfn "---------------------------------------------------------"
+    printfn "*********************************************************"
+    printfn "* Survivor/Advocate Report on Outcomes of Help Requests *"
+    printfn "*********************************************************"
+    printfn "\r"
 
+
+
+//    firstngo(fngo)
 
 
 [<EntryPoint>]
@@ -23,5 +27,8 @@ let main argv =
     printfn "Your outcome in seeking help has been recorded \r"
     printfn "and your anonymity has been protected"
     let hr = (helpreport())
+
+//    let firstngo(fngo) =
+//        printfn "First NGO: %s" fngo
     0 // return an integer exit code
 

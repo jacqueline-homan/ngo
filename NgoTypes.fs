@@ -11,7 +11,7 @@ module Types =
         | TraffickingVictimSafehouse
         | FoodPantry
         | ClothingPantry
-        | CharityMedicalDentalClinic
+        | MedicalDentalClinic
 
     type Ngo = Ngo of NgoType * string
 
@@ -62,27 +62,29 @@ module Types =
         | PovertyRelief of Set<UnmetNeeds>
 
     type Followup =
-        | SocialWorkerFollowup of Help
-        | CallerSelfDirected of Help
+        | NoFollowup
+        | SocialWorker of Help
+        | SelfDirected of Help
 
     and Help =
         | Helped //fully helped with everything caller needed
         | ExhaustedOptions //exhausted resources and still not helped
-        | HelpFail // i.e. caller offered smoking cessation counseling when caller needed sex trafficking aftercare
-        | DeniedHelp of Followup
-        | GivenReferral of ReferredToNextNgo
+        | HelpFail of Followup// i.e. caller offered smoking cessation counseling when caller needed sex trafficking aftercare
+        | DeniedHelp of Followup //denied help, maybe due to discrimination
+        | GivenReferral of RefToNextNgo
 
-    and ReferredToNextNgo = ReferredToNextNgo of Followup * Ngo
+    and RefToNextNgo = RefToNextNgo of Followup * Ngo
 
     type PoliceDisp =
         | VictimRescued
         | CopsNoHelp of Followup
 
     type CallOutcome =
-        | Helped
+        | GotHelped
         | EmergencyResponse of PoliceDisp
         | NotHelped of Followup
-        | Referred of ReferredToNextNgo
+        | Referred of RefToNextNgo
+        | CallDrop of Followup
 
     type Call = Call of Caller * CallerRequest * CallOutcome
 
