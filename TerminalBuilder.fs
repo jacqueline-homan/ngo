@@ -127,6 +127,7 @@ module TerminalBuilder =
         | "5" -> Ngo(FoodPantry, ans)
         | "7" -> Ngo(ClothingPantry, ans)
         | "8" -> Ngo(MedicalDentalClinic, ans)
+        | "9" -> Ngo(LegalAid, ans)
         | _ -> printfn "INVALID ENTRY"
                ngo()
 
@@ -174,29 +175,32 @@ module TerminalBuilder =
         | _ -> printfn "INVALID ENTRY"
                police_disp()
 
-    let rec firstngo() =
+    let firstngo() =
         printfn "Which NGO did you contact for help first?"
         let resp = Console.ReadLine()
-        match resp.Trim().ToLower() with
-        | "%s" -> printfn "First NGO called: **%s**" resp
-        | _ ->
-            let rec call_outcome():CallOutcome =
-                printfn "What help did %s provide?" resp
-                printfn "1 for %s hotline operator dispatched 911" resp
-                printfn "2 for %s provided aftercare to survivor" resp
-                printfn "3 for %s referred me to another NGO" resp
-                printfn "4 for %s denied me help/did not help at all" resp
-                printfn "5 for call got disconnected and %s did not follow up" resp
-                let re = Console.ReadLine()
-                match re with
-                |"1" -> EmergencyResponse (police_disp())
-                |"2" -> GotHelped
-                |"3" -> Referred (ref())
-                |"4" -> NotHelped (followup())
-                |"5" -> CallDrop (followup())
-                | _ -> printfn "INVALID ENTRY"
-                       call_outcome()
-            firstngo()
+        printfn "First NGO: "
+      //  match resp.Trim().ToLower() with
+       // | "%s" -> printfn "First NGO called: **%s**" resp
+       // | _ ->
+    let rec callOutcome():CallOutcome =
+        printfn "Name of NGO: "
+        let resp = Console.ReadLine().Trim().ToUpper()
+        printfn "What help did %s provide?" resp
+        printfn "1 for %s hotline operator dispatched 911" resp
+        printfn "2 for %s provided aftercare to survivor" resp
+        printfn "3 for %s referred me to another NGO" resp
+        printfn "4 for %s denied me help/did not help at all" resp
+        printfn "5 for call got disconnected and %s did not follow up" resp
+        let re = Console.ReadLine()
+        match re with
+        |"1" -> EmergencyResponse (police_disp())
+        |"2" -> GotHelped
+        |"3" -> Referred (ref())
+        |"4" -> NotHelped (followup())
+        |"5" -> CallDrop (followup())
+        | _ -> printfn "INVALID ENTRY"
+               callOutcome()
+        //    firstngo()
 
     
      

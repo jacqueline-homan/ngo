@@ -12,6 +12,7 @@ module Types =
         | FoodPantry
         | ClothingPantry
         | MedicalDentalClinic
+        | LegalAid
 
     type Ngo = Ngo of NgoType * string
 

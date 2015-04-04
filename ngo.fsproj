@@ -64,6 +64,7 @@
     <Compile Include="Program.fs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\..\Microsoft SDKs\F#\3.1\Framework\v4.0\Microsoft.FSharp.Targets" />
+  <Import Project="..\packages\WebSharper.2.5.134.72\build\WebSharper.targets" Condition="Exists('..\packages\WebSharper.2.5.134.72\build\WebSharper.targets')" />
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
