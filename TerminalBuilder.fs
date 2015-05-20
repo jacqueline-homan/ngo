@@ -28,9 +28,11 @@ module TerminalBuilder =
             printfn " 6 for Chronic Illness"
             printfn " 7 for Undiagnosed/Don't Know"
             printfn " Enter 'NO' for No Disabling Conditions"
+            printfn "Enter 'Done' when finished listing special needs"
             let ans = Console.ReadLine()
             match ans.Trim().ToLower() with
             | "no" -> s
+            | "done" -> s
             | _ -> 
                 let sn =
                     match ans.Trim().ToLower() with
@@ -117,9 +119,9 @@ module TerminalBuilder =
         printfn "7 for Medical and Dental Care charity clinic"
         let answer = Console.ReadLine()
         printfn "Enter the name of the NGO you  were referred to: "
-        let ans = Console.ReadLine()
+        let ans = Console.ReadLine().Trim().ToUpper()
         printfn "%s" ans
-        match ans.Trim().ToLower() with
+        match answer.Trim().ToLower() with
         | "1" -> Ngo(HomelessShelter, ans)
         | "2" -> Ngo(DVShelter, ans)
         | "3" -> Ngo(TraffickingSurvivorAftercare, ans)
@@ -174,30 +176,24 @@ module TerminalBuilder =
         | "N" -> CopsNoHelp (followup())
         | _ -> printfn "INVALID ENTRY"
                police_disp()
+        
 
-    let firstngo() =
-        printfn "Which NGO did you contact for help first?"
-        let resp = Console.ReadLine()
-        printfn "First NGO: "
-      //  match resp.Trim().ToLower() with
-       // | "%s" -> printfn "First NGO called: **%s**" resp
-       // | _ ->
+
     let rec callOutcome():CallOutcome =
-        printfn "Name of NGO: "
-        let resp = Console.ReadLine().Trim().ToUpper()
-        printfn "What help did %s provide?" resp
-        printfn "1 for %s hotline operator dispatched 911" resp
-        printfn "2 for %s provided aftercare to survivor" resp
-        printfn "3 for %s referred me to another NGO" resp
-        printfn "4 for %s denied me help/did not help at all" resp
-        printfn "5 for call got disconnected and %s did not follow up" resp
+        let n = ngo()
+        printfn "What help did  provide?" 
+        printfn "1 for  hotline operator dispatched 911" 
+        printfn "2 for  provided aftercare to survivor" 
+        printfn "3 for  referred me to another NGO" 
+        printfn "4 for  denied me help/did not help at all" 
+        printfn "5 for call got disconnected and  did not follow up" 
         let re = Console.ReadLine()
         match re with
-        |"1" -> EmergencyResponse (police_disp())
-        |"2" -> GotHelped
-        |"3" -> Referred (ref())
-        |"4" -> NotHelped (followup())
-        |"5" -> CallDrop (followup())
+        |"1" -> EmergencyResponse (n, police_disp())
+        |"2" -> GotHelped (n)
+        |"3" -> Referred (n, ref())
+        |"4" -> NotHelped (n, followup())
+        |"5" -> CallDrop (n, followup())
         | _ -> printfn "INVALID ENTRY"
                callOutcome()
         //    firstngo()

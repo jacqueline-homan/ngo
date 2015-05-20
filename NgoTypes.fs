@@ -81,11 +81,11 @@ module Types =
         | CopsNoHelp of Followup
 
     type CallOutcome =
-        | GotHelped
-        | EmergencyResponse of PoliceDisp
-        | NotHelped of Followup
-        | Referred of RefToNextNgo
-        | CallDrop of Followup
+        | GotHelped of Ngo
+        | EmergencyResponse of Ngo*PoliceDisp
+        | NotHelped of Ngo*Followup
+        | Referred of Ngo*RefToNextNgo
+        | CallDrop of Ngo*Followup
 
     type Call = Call of Caller * CallerRequest * CallOutcome
 

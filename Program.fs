@@ -10,7 +10,7 @@ open Newtonsoft.Json
 open Agencies.Types
 open Agencies.TerminalBuilder
 
-let rec ngoingo(Ngo(cat,name)) =
+let rec ngoinfo(Ngo(cat,name)) =
     match cat with 
     | HomelessShelter -> printfn "Homeless Shelter: %s" name
     | DVShelter -> printfn "Domestic Violence Shelter for Women and Children: %s" name
@@ -90,17 +90,27 @@ let callerReq(cr:CallerRequest) =
     | PovertyRelief(un) -> printfn "Economic Support for Poverty Relief"
                            fx(un)
 
+let showreferral(RefToNextNgo(fu,n))=
+    ngoinfo(n) 
+    followupper(fu)
+
 let callOutcome(co:CallOutcome) =
     match co with
-    | GotHelped -> printfn "Victim/Survivor/Client got helped"
-    | EmergencyResponse (pd) -> printfn "911 dispatched to rescue trafficking victim"
-                                outcome_of_pol_disp(pd)
-    | NotHelped (fu) -> printfn "Not helped and not referred to anyone that will help"
-                        followupper(fu)
-    | Referred (crngo) -> printfn "Not helped but given a referral to another NGO"
+    | GotHelped(n) -> printfn "Victim/Survivor/Client got helped"
+                      ngoinfo(n)                      
+    | EmergencyResponse (n, pd) -> printfn "911 dispatched to rescue trafficking victim"
+                                   ngoinfo(n) 
+                                   outcome_of_pol_disp(pd)
+    | NotHelped (n,fu) -> printfn "Not helped and not referred to anyone that will help"
+                          ngoinfo(n)
+                          followupper(fu)
+    | Referred (n, crngo) -> printfn "Not helped but given a referral to another NGO"
+                             ngoinfo(n)
+                             showreferral(crngo)
                          
-    | CallDrop (fu) -> printfn "Hung up on/Call dropped"
-                       followupper(fu)
+    | CallDrop (n, fu) -> printfn "Hung up on/Call dropped"
+                          ngoinfo(n)
+                          followupper(fu)
     
 
 
@@ -115,9 +125,9 @@ let helpreport(Call(ca, cr, co)) =
     printfn "*********************************************************"
     printfn "\r"
 
-    //caller(c)
-    firstngo()
-  //  callerRequest(cr) 
+ //   caller(c)
+ //   printfn "First NGO contacted for help was: %s" 
+    callerReq(cr) 
     callOutcome(co)
 
 //    firstngo(fngo)
@@ -125,16 +135,16 @@ let helpreport(Call(ca, cr, co)) =
 
 [<EntryPoint>]
 let main argv =
-    //let c = (caller())
+    let c = Agencies.TerminalBuilder.caller()
     let cr = (callerRequest())
    // let co = (callOutcome(CallOutcome()))
     let cd = (specialNeeds())
-    let fn = (firstngo())
-    let crngo = (ref())
-   // let ca = Call(c,cr,co)
+  //  let fn = Agencies.TerminalBuilder.firstngo()
+    let co = Agencies.TerminalBuilder.callOutcome()
+    let ca = Call(c,cr,co)
     printfn "Your outcome in seeking help has been recorded \r"
     printfn "and your anonymity has been protected"
-   // let hr = (helpreport(Call(c,cr, co)))
+    let hr = (helpreport(Call(c,cr, co)))
 
 
 //    let firstngo(fngo) =
